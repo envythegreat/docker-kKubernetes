@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api
+  labels:
+    app: product-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-api
+  template:
+    metadata:
+      labels:
+        app: product-api
+    spec:
+      containers:
+      - name: product-api
+        image: cosmicenvy/product-api:1
+        ports:
+        - containerPort: 8085
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-api-service
+spec:
+  selector:
+    app: product-api
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085
+      nodePort: 30020
